@@ -4,3 +4,4 @@ app/.env
 
 #Folders
 venv/
+.venv/
