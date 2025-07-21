@@ -1,0 +1,12 @@
+#folders
+app/node_modules/
+app/build/
+app/dist/
+app/.git/
+
+# files 
+app/*.log
+app/.gitignore
+app/.env*
+Dockerfile
+.dockerignore

@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Request
 from fastapi.responses import RedirectResponse, JSONResponse, PlainTextResponse
 from fastapi import status
 import os
@@ -18,7 +18,8 @@ auth_serv = AuthServ(DB_URL)
 
 
 @router.get('/')
-async def base():
+async def base(request: Request):
+
     math_serv.print_db()
     return RedirectResponse('/math_formulas', status_code=status.HTTP_303_SEE_OTHER)
 
@@ -51,33 +52,36 @@ async def current_user(token: mod.AuthToken):
 
 
 @router.post('/math_formulas/fibo', response_class=JSONResponse, tags=['fibo'])
-async def fibo(body: mod.Req1Int):
-    
+async def fibo(req: Request, body: mod.Req1Int):
+    redis_ref = req.app.state.redis
     dict_body = body.model_dump()
-    return {"FIBO": math_serv.fibo(**dict_body)}
+    dict_body.update({"redis": redis_ref})
+    return {"FIBO": await math_serv.fibo(**dict_body)}
 
 
 @router.post('/math_formulas/fact', response_class=JSONResponse, tags=['fact'])
-async def fact(body: mod.Req1Int):
-
+async def fact(req: Request, body: mod.Req1Int):
+    redis_ref = req.app.state.redis
     dict_body = body.model_dump()
-    return {"FACT": math_serv.fact(**dict_body)}
+    dict_body.update({"redis": redis_ref})
+    return {"FACT": await math_serv.fact(**dict_body)}
 
 
 @router.post('/math_formulas/gama_sum', response_class=JSONResponse, tags=['gama_sum'])
-async def gama_sum(body: mod.Req1Int):
-    
+async def gama_sum(req: Request, body: mod.Req1Int):
+    redis_ref = req.app.state.redis
     dict_body = body.model_dump()
-    return {"FIBO": math_serv.gama_sum(**dict_body)}
+    dict_body.update({"redis": redis_ref})
+    return {"FIBO": await math_serv.gama_sum(**dict_body)}
 
 
 
 @router.post('/math_formulas/pow', response_class=JSONResponse, tags=['pow'])
-async def pow(body: mod.Req2Int):
-
+async def pow(req: Request, body: mod.Req2Int):
+    redis_ref = req.app.state.redis
     dict_body = body.model_dump()
-    print(dict_body)
-    return {"POW": math_serv.pow(**dict_body)}
+    dict_body.update({"redis": redis_ref})
+    return {"POW": await math_serv.pow(**dict_body)}
 
 
 @router.post('/math_formulas/cmmmc', response_class=JSONResponse, tags=['cmmmc'])
