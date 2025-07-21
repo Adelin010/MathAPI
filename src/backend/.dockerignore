@@ -1,16 +1,16 @@
-# python modules related
-**/__pycache__/
-# *.pyc
-# *.pyo
-# *$py.class
+# # python modules related
+# **/__pycache__/
+# # *.pyc
+# # *.pyo
+# # *$py.class
 
-# env related 
-**/.env
-**/venv/
+# # env related 
+# **/.env
+# **/venv/
 
-# git related
-**/.git
-**/.gitignore
+# # git related
+# **/.git
+# **/.gitignore
 
-#SQLite Databases
-**/DB/MathFormulas.db
+# #SQLite Databases
+# **/DB/MathFormulas.db

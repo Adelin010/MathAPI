@@ -5,4 +5,4 @@ app/.env
 #Folders
 **/.venv/
 **/venv/
-**/DB/
+**/DB/MathFormulas.db

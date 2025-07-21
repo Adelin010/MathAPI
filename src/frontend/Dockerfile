@@ -1,6 +1,6 @@
 FROM node:alpine
 
-WORKDIR /frontend
+WORKDIR /app
 
 # the dest(second param) can be either absolute in the container or 
 # relative to the working directory
@@ -8,7 +8,7 @@ COPY ./app/package*.json ./
 
 RUN npm install 
 
-COPY ./app ./app
+COPY ./app ./
 
 EXPOSE 3000
 
