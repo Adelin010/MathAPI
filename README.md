@@ -14,3 +14,6 @@ for the result to be displayed.
 #### Routing and project structure
 From the landing page (rount: /math_formulas - name of the microservice base rounting) by choosing each box you are redirected to the '/math_formulas/{name_of_formula}' 
 
+
+#### Request Bodies structure
+1) for the Signin: 

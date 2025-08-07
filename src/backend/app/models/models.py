@@ -1,7 +1,9 @@
 from pydantic import BaseModel, Field
 from datetime import datetime
 
-# for the models  we have to match the fields in name, mostly like a database entity
+# Models use in the Request body parsing 
+# In the context of mathematical operations we diferenciate between
+# requests with one integer parameter and requests with two integer parameters
 class Req2Int(BaseModel):
     n: int
     m: int 
@@ -11,6 +13,8 @@ class Req1Int(BaseModel):
     n: int
 
 
+# The HistoryRecord is used to parse the entity of the history table 
+# In which we store the order-call of the mathematical operations
 class HistoryRecord(BaseModel):
     id: int
     func_name: str

@@ -1,0 +1,29 @@
+services: 
+  frontend:
+    build: ./frontend
+    depends_on:
+      - backend
+    ports:
+      - "3000:3000"
+    
+
+  backend:
+    build: ./backend
+    depends_on:
+      - redis
+    volumes:
+      - "./backend/app/DB/MathFormulas.db:/app/backend/DB/MathFormulas.db"
+    environment:
+      - DB_URL=./DB/MathFormulas.db
+      - REDIS_HOST=localhost
+      - REDIS_PORT=6379
+
+    ports:
+      - "8000:8000"
+
+  redis:
+    image: redis:7.4.5-alpine3.21
+    ports:  
+      - "6378:6379"
+    container_name: r_cache
+
