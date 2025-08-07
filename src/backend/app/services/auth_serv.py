@@ -99,7 +99,7 @@ class Service:
         email, password = credentials.values()
         user = self.__auth_user(email, password)
         print("Final Auth done ###########")
-        if not user:
+        if len(user) == 0:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Incorrect username or password",
@@ -115,12 +115,12 @@ class Service:
     # password: str - the password of the user to be authenticated
     # returns: bool | list - True if the user is authenticated, False if the user is not found or the password is incorrect, or a list of user data if the user is found
     # raises: Exception - if the authentication fails
-    def __auth_user(self, email: str, password: str) -> bool | list:
+    def __auth_user(self, email: str, password: str) ->  list:
         found_user = self.get_user(email=email)
         if len(found_user) == 0:
-            return False
+            return []
         elif not self.__verif_password(password, found_user[0][2]):
-            return False
+            return []
         return found_user
 
 

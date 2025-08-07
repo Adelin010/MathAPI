@@ -1,6 +1,7 @@
 services: 
   frontend:
     build: ./frontend
+    container_name: front
     depends_on:
       - backend
     ports:
@@ -9,13 +10,14 @@ services:
 
   backend:
     build: ./backend
+    container_name: back
     depends_on:
       - redis
     volumes:
       - "./backend/app/DB/MathFormulas.db:/app/backend/DB/MathFormulas.db"
     environment:
       - DB_URL=./DB/MathFormulas.db
-      - REDIS_HOST=localhost
+      - REDIS_HOST=redis
       - REDIS_PORT=6379
 
     ports:
