@@ -92,10 +92,11 @@ class Service:
             print('################No Cached')
             return int(val) 
         # Otherwise compute and save the value
-        res = alg.fibo(n = n)
-        if res > 100000:
-            print('############## Cached')
-            await Service.__cach_result(redis=redis, key=f'fibo_{n}', val=res)
+        # res = alg.fibo(n = n)
+        res = 0
+        for i in range(n):
+            res = alg.fibo(n=i)
+            await Service.__cach_result(redis=redis, key=f'fibo_{i}', val=res)
         return res
     
     # method to compute the power of a number
@@ -120,16 +121,36 @@ class Service:
     # method to compute the greatest common divisor of two numbers
     # n: int - the first number
     # m: int - the second number
-    def cmmdc(self, *, n: int, m: int) -> int:
+    async def cmmdc(self, *,redis,  n: int, m: int) -> int:
         self.__add_to_db('cmmdc', 2, 'n,m', f'{n},{m}')
-        return alg.cmmdc(n, m)
+
+        val = await Service.__extract_cach(redis=redis, key=f'cmmdc_{n}')
+        if val :
+            print('################No Cached')
+            return int(val) 
+
+        res = alg.cmmdc(n, m)
+        if res > 100000:
+            await Service.__cach_result(redis=redis, key=f'cmmdc_{n}', val=res)
+        return res
+    
 
     # method to compute the least common multiple of two numbers
     # n: int - the first number
     # m: int - the second number
-    def cmmmc(self, *, n: int, m: int) -> int:
+    async def cmmmc(self, *, redis , n: int, m: int) -> int:
         self.__add_to_db('cmmmc', 2, 'n, m', f'{n},{m}')
-        return alg.cmmmc(n, m)
+
+        val = await Service.__extract_cach(redis=redis, key=f'cmmmc_{n}')
+        if val :
+            print('################No Cached')
+            return int(val) 
+
+        res =  alg.cmmmc(n, m)
+        if res > 100000:
+            await Service.__cach_result(redis=redis, key=f'cmmmc_{n}', val=res)
+        return res
+
 
     # method to compute the factorial of a number
     # redis: Redis - the redis connection
@@ -142,9 +163,10 @@ class Service:
             print('################No Cached')
             return int(val) 
         
-        res = alg.fact(n)
-        if res > 100000:
-            await Service.__cach_result(redis=redis, key=f'fact_{n}', val=res)
+        res = 0
+        for i in range(n):
+            res = alg.fact(i)
+            await Service.__cach_result(redis=redis, key=f'fact_{i}', val=res)
         return res
     
     # method to compute the sum of the first n natural numbers

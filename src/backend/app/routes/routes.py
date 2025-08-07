@@ -47,10 +47,10 @@ async def auth(credentials: mod.Credentials):
 
 # JWT token for verifyng the current user
 @router.post('/auth_current_user', response_class=PlainTextResponse, tags=['current_user'])
-async def current_user(token: mod.AuthToken):
-    dict_token = token.model_dump()
-    token_str = dict_token['token']
-    user_as_list = auth_serv.get_user_through_token(token_str)
+async def current_user(req: Request):
+    token = req.headers.get('token')
+    token_type = req.headers.get('token_type')
+    user_as_list = auth_serv.get_user_through_token(token)
     print(user_as_list)
     return "All good..."
 
@@ -60,6 +60,10 @@ async def current_user(token: mod.AuthToken):
 @router.post('/math_formulas/fibo', response_class=JSONResponse, tags=['fibo'])
 async def fibo(req: Request, body: mod.Req1Int):
     redis_ref = req.app.state.redis
+    token = req.headers.get('token')
+    
+    auth_serv.get_user_through_token(token)
+
     dict_body = body.model_dump()
     dict_body.update({"redis": redis_ref})
     return {"FIBO": await math_serv.fibo(**dict_body)}
@@ -69,6 +73,10 @@ async def fibo(req: Request, body: mod.Req1Int):
 @router.post('/math_formulas/fact', response_class=JSONResponse, tags=['fact'])
 async def fact(req: Request, body: mod.Req1Int):
     redis_ref = req.app.state.redis
+    token = req.headers.get('token')
+
+    auth_serv.get_user_through_token(token)
+
     dict_body = body.model_dump()
     dict_body.update({"redis": redis_ref})
     return {"FACT": await math_serv.fact(**dict_body)}
@@ -78,6 +86,10 @@ async def fact(req: Request, body: mod.Req1Int):
 @router.post('/math_formulas/gama_sum', response_class=JSONResponse, tags=['gama_sum'])
 async def gama_sum(req: Request, body: mod.Req1Int):
     redis_ref = req.app.state.redis
+    token = req.headers.get('token')
+
+    auth_serv.get_user_through_token(token)
+
     dict_body = body.model_dump()
     dict_body.update({"redis": redis_ref})
     return {"FIBO": await math_serv.gama_sum(**dict_body)}
@@ -88,6 +100,10 @@ async def gama_sum(req: Request, body: mod.Req1Int):
 @router.post('/math_formulas/pow', response_class=JSONResponse, tags=['pow'])
 async def pow(req: Request, body: mod.Req2Int):
     redis_ref = req.app.state.redis
+    token = req.headers.get('token')
+
+    auth_serv.get_user_through_token(token)
+
     dict_body = body.model_dump()
     dict_body.update({"redis": redis_ref})
     return {"POW": await math_serv.pow(**dict_body)}
@@ -95,16 +111,26 @@ async def pow(req: Request, body: mod.Req2Int):
 # CMMDC route to get the greatest common divisor of two numbers
 # expected parameters: n (int), m (int)
 @router.post('/math_formulas/cmmmc', response_class=JSONResponse, tags=['cmmmc'])
-async def cmmmc(body: mod.Req2Int):
+async def cmmmc(req: Request, body: mod.Req2Int):
+    redis_ref = req.app.state.redis
+    token = req.headers.get('token')
+
+    auth_serv.get_user_through_token(token)
 
     dict_body = body.model_dump()
-    return {"CMMMC": math_serv.cmmmc(**dict_body)}
+    dict_body.update({"redis": redis_ref})
+    return {"CMMMC": await math_serv.cmmmc(**dict_body)}
 
 # CMMDC route to get the least common multiple of two numbers
 # expected parameters: n (int), m (int)
 @router.post('/math_formulas/cmmdc', response_class=JSONResponse, tags=['cmmdc'])
-async def cmmdc(body: mod.Req2Int):
+async def cmmdc(req: Request, body: mod.Req2Int):
+    redis_ref = req.app.state.redis
+    token = req.headers.get('token')
+
+    auth_serv.get_user_through_token(token)
 
     dict_body = body.model_dump()
-    return {"CMMDC": math_serv.cmmdc(**dict_body)}
+    dict_body.update({"redis": redis_ref})
+    return {"CMMDC": await math_serv.cmmdc(**dict_body)}
 

@@ -74,7 +74,7 @@ class Service:
     def get_user_through_token(self, token: Annotated[str, Depends(__outh2_schema)]) -> mod.User:
         credentials_exception = HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Could not validate credentials",
+            detail="The token was either not found or is wrong",
             headers={"WWW-Authenticate": "Bearer"},
         )
 

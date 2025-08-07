@@ -1,6 +1,10 @@
 from pydantic import BaseModel, Field
 from datetime import datetime
 
+class AuthToken(BaseModel):
+    token: str
+    token_type: str
+
 # Models use in the Request body parsing 
 # In the context of mathematical operations we diferenciate between
 # requests with one integer parameter and requests with two integer parameters
@@ -38,6 +42,4 @@ class Credentials(BaseModel):
     def values(self) -> list[str]:
         return [self.email, self.password]
 
-class AuthToken(BaseModel):
-    token: str
-    token_type: str
+
