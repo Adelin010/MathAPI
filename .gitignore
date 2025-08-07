@@ -1,6 +1,7 @@
 #Files 
 **/__pycache__
 **/.env
+src/backend/app/.env
 
 #Folders
 **/.venv/
